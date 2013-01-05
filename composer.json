@@ -1,0 +1,33 @@
+{
+    "name": "neto/maestro",
+    "description": "Maestro is an easy-to-use installation development for PHP applications",
+    "type": "library",
+    "keywords": [
+        "software",
+        "instalation",
+        "development"
+    ],
+    "homepage": "http://netojoaobatista.github.com/maestro/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "João Batista Neto",
+            "email": "neto.joaobatista@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "monolog/monolog": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7@stable"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "src/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
