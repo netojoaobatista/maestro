@@ -3,12 +3,12 @@ namespace maestro;
 
 class CountableAggregateTest extends \PHPUnit_Framework_TestCase
 {
-    protected function createStub($expects, $instance)
+    protected function createStub($expected, $instance)
     {
         $countableAggregate = $this->getMock('maestro\CountableAggregate',
                                              array('accept'));
 
-        $countableAggregate->expects($expects)
+        $countableAggregate->expects($expected)
                            ->method('accept')
                            ->with($instance)
                            ->will($this->returnValue(true));
@@ -19,25 +19,28 @@ class CountableAggregateTest extends \PHPUnit_Framework_TestCase
     public function testAccept()
     {
         $stdClass = new \stdClass();
-        $arrayObject = new \ArrayObject();
 
         $countableAggregate = $this->createStub($this->at(0), $stdClass);
 
-        $countableAggregate->expects($this->at(1))
+        $countableAggregate->add($stdClass);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testAcceptThrowsException()
+    {
+        $arrayObject = new \ArrayObject();
+
+	    $countableAggregate = $this->getMock('maestro\CountableAggregate',
+                                             array('accept'));
+
+        $countableAggregate->expects($this->at(0))
                            ->method('accept')
                            ->with($arrayObject)
                            ->will($this->returnValue(false));
 
-        $countableAggregate->add($stdClass);
-
-        try {
-            //this will throws an InvalidArgumentException
-            $countableAggregate->add($arrayObject);
-
-            $this->fail('InvalidArgumentException has not been thrown.');
-        } catch (\InvalidArgumentException $e) {
-            //:D
-        }
+        $countableAggregate->add($arrayObject);
     }
 
     public function testAdd()
