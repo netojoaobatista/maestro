@@ -3,12 +3,12 @@ namespace maestro;
 
 class CountableAggregateTest extends \PHPUnit_Framework_TestCase
 {
-    protected function createStub($expects, $instance)
+    protected function createStub($expected, $instance)
     {
         $countableAggregate = $this->getMock('maestro\CountableAggregate',
                                              array('accept'));
 
-        $countableAggregate->expects($expects)
+        $countableAggregate->expects($expected)
                            ->method('accept')
                            ->with($instance)
                            ->will($this->returnValue(true));
@@ -22,11 +22,6 @@ class CountableAggregateTest extends \PHPUnit_Framework_TestCase
 
         $countableAggregate = $this->createStub($this->at(0), $stdClass);
 
-	$countableAggregate->expects($this->at(0))
-                           ->method('accept')
-                           ->with($stdClass)
-                           ->will($this->returnValue(true));
-
         $countableAggregate->add($stdClass);
     }
 
@@ -37,7 +32,7 @@ class CountableAggregateTest extends \PHPUnit_Framework_TestCase
     {
         $arrayObject = new \ArrayObject();
 
-	$countableAggregate = $this->getMock('maestro\CountableAggregate',
+	    $countableAggregate = $this->getMock('maestro\CountableAggregate',
                                              array('accept'));
 
         $countableAggregate->expects($this->at(0))
