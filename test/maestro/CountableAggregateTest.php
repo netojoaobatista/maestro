@@ -19,25 +19,33 @@ class CountableAggregateTest extends \PHPUnit_Framework_TestCase
     public function testAccept()
     {
         $stdClass = new \stdClass();
-        $arrayObject = new \ArrayObject();
 
         $countableAggregate = $this->createStub($this->at(0), $stdClass);
 
-        $countableAggregate->expects($this->at(1))
+	$countableAggregate->expects($this->at(0))
+                           ->method('accept')
+                           ->with($stdClass)
+                           ->will($this->returnValue(true));
+
+        $countableAggregate->add($stdClass);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testAcceptThrowsException()
+    {
+        $arrayObject = new \ArrayObject();
+
+	$countableAggregate = $this->getMock('maestro\CountableAggregate',
+                                             array('accept'));
+
+        $countableAggregate->expects($this->at(0))
                            ->method('accept')
                            ->with($arrayObject)
                            ->will($this->returnValue(false));
 
-        $countableAggregate->add($stdClass);
-
-        try {
-            //this will throws an InvalidArgumentException
-            $countableAggregate->add($arrayObject);
-
-            $this->fail('InvalidArgumentException has not been thrown.');
-        } catch (\InvalidArgumentException $e) {
-            //:D
-        }
+        $countableAggregate->add($arrayObject);
     }
 
     public function testAdd()
